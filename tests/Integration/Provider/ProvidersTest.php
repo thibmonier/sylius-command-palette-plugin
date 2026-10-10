@@ -114,6 +114,7 @@ final class ProvidersTest extends KernelTestCase
         self::assertInstanceOf(CustomerInterface::class, $john);
         $john->setPhoneNumber('+1-325-555-0100');
         $this->entityManager()->flush();
+        $customerGroup = (string) $john->getGroup()?->getName(); // random as well
 
         $customers = $this->provider('customers');
 
@@ -123,7 +124,7 @@ final class ProvidersTest extends KernelTestCase
         }
 
         $john = $customers->search('shop@example.com', 5)[0];
-        self::assertSame('shop@example.com · Retail', $john->subtitle);
+        self::assertSame(implode(' · ', array_filter(['shop@example.com', $customerGroup])), $john->subtitle);
         self::assertSame('tabler:user', $john->icon);
     }
 
@@ -150,7 +151,15 @@ final class ProvidersTest extends KernelTestCase
         $this->entityManager()->flush();
         $email = (string) $customer->getEmail();
 
-        foreach (['orders' => $email, 'customers' => 'a', 'products' => 'a', 'promotions' => 'a'] as $key => $query) {
+        // No customer name is guaranteed to start with a given letter.
+        /** @var list<CustomerInterface> $customers */
+        $customers = $this->entityManager()->getRepository(CustomerInterface::class)->findBy([], ['id' => 'ASC'], 2);
+        foreach ($customers as $namesake) {
+            $namesake->setFirstName('Zebulon');
+        }
+        $this->entityManager()->flush();
+
+        foreach (['orders' => $email, 'customers' => 'zebulon', 'products' => 'a', 'promotions' => 'a'] as $key => $query) {
             self::assertCount(2, $this->provider($key)->search($query, 2), $key);
         }
     }
