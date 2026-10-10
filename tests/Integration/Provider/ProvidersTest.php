@@ -109,6 +109,12 @@ final class ProvidersTest extends KernelTestCase
 
     public function testCustomersAreFoundByNameFullNamePhoneAndCaseInsensitiveEmail(): void
     {
+        // The fixture phone number is random.
+        $john = $this->entityManager()->getRepository(CustomerInterface::class)->findOneBy(['email' => 'shop@example.com']);
+        self::assertInstanceOf(CustomerInterface::class, $john);
+        $john->setPhoneNumber('+1-325-555-0100');
+        $this->entityManager()->flush();
+
         $customers = $this->provider('customers');
 
         foreach (['SHOP@EXAMPLE.COM', 'john doe', 'Jo D', '+1-325'] as $query) {
@@ -123,19 +129,26 @@ final class ProvidersTest extends KernelTestCase
 
     public function testEveryProviderRespectsTheLimit(): void
     {
-        $email = $this->entityManager()->createQueryBuilder()
-            ->select('c.email')
+        // The fixtures spread orders randomly: give three placed orders to the same customer.
+        /** @var list<OrderInterface> $orders */
+        $orders = $this->entityManager()->createQueryBuilder()
+            ->select('o')
             ->from(OrderInterface::class, 'o')
-            ->innerJoin('o.customer', 'c')
             ->andWhere('o.state != :cart')
             ->setParameter('cart', OrderInterface::STATE_CART)
-            ->groupBy('c.email')
-            ->having('COUNT(o.id) >= 3')
-            ->setMaxResults(1)
+            ->orderBy('o.id', 'ASC')
+            ->setMaxResults(3)
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getResult()
         ;
-        self::assertIsString($email, 'The fixtures should contain a customer with 3 orders or more.');
+        self::assertCount(3, $orders, 'The fixtures contain placed orders.');
+        $customer = $orders[0]->getCustomer();
+        self::assertInstanceOf(CustomerInterface::class, $customer);
+        foreach ($orders as $order) {
+            $order->setCustomer($customer);
+        }
+        $this->entityManager()->flush();
+        $email = (string) $customer->getEmail();
 
         foreach (['orders' => $email, 'customers' => 'a', 'products' => 'a', 'promotions' => 'a'] as $key => $query) {
             self::assertCount(2, $this->provider($key)->search($query, 2), $key);
