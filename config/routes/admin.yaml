@@ -1,0 +1,5 @@
+tmonier_command_palette_admin_search:
+    path: /command-palette/search
+    methods: [GET]
+    defaults:
+        _controller: tmonier_command_palette.controller.admin.search

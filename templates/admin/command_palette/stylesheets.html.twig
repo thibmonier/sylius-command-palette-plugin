@@ -1,0 +1,3 @@
+{% if is_granted('ROLE_ADMINISTRATION_ACCESS') %}
+    <link rel="stylesheet" href="{{ asset('bundles/tmoniersyliuscommandpaletteplugin/command-palette.css') }}?v={{ constant('Tmonier\\SyliusCommandPalettePlugin\\TmonierSyliusCommandPalettePlugin::ASSETS_VERSION') }}" data-tmonier-command-palette-style>
+{% endif %}

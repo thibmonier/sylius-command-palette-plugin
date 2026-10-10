@@ -1,0 +1,60 @@
+{% if is_granted('ROLE_ADMINISTRATION_ACCESS') %}
+    {% set messages = {
+        empty: 'tmonier_command_palette.ui.empty'|trans,
+        noResults: 'tmonier_command_palette.ui.no_results'|trans,
+        loading: 'tmonier_command_palette.ui.loading'|trans,
+        error: 'tmonier_command_palette.ui.error'|trans,
+        sessionExpired: 'tmonier_command_palette.ui.session_expired'|trans,
+        results: 'tmonier_command_palette.ui.results'|trans,
+        pages: 'tmonier_command_palette.group.pages'|trans,
+        actions: 'tmonier_command_palette.group.actions'|trans,
+    } %}
+    <div class="tmonier-cp"
+         hidden
+         data-tmonier-command-palette
+         data-search-url="{{ path('tmonier_command_palette_admin_search') }}"
+         data-config="{{ tmonier_command_palette_data()|json_encode }}"
+         data-messages="{{ messages|json_encode }}"
+    >
+        <div class="tmonier-cp__backdrop" data-tmonier-cp-close></div>
+        <div class="tmonier-cp__dialog" role="dialog" aria-modal="true" aria-labelledby="tmonier-cp-title">
+            <h2 id="tmonier-cp-title" class="visually-hidden">{{ 'tmonier_command_palette.ui.title'|trans }}</h2>
+            <div class="tmonier-cp__search">
+                {{ ux_icon('tabler:search', {'class': 'icon tmonier-cp__search-icon', 'aria-hidden': 'true'}) }}
+                <input type="text"
+                       class="tmonier-cp__input"
+                       role="combobox"
+                       aria-expanded="false"
+                       aria-autocomplete="list"
+                       aria-controls="tmonier-cp-listbox"
+                       aria-label="{{ 'tmonier_command_palette.ui.placeholder'|trans }}"
+                       placeholder="{{ 'tmonier_command_palette.ui.placeholder'|trans }}"
+                       maxlength="100"
+                       autocomplete="off"
+                       autocapitalize="off"
+                       spellcheck="false"
+                       data-tmonier-cp-input
+                >
+                <span class="spinner-border spinner-border-sm text-secondary" hidden aria-hidden="true" data-tmonier-cp-loading></span>
+                <button type="button" class="btn-close" aria-label="{{ 'tmonier_command_palette.ui.close'|trans }}" data-tmonier-cp-close></button>
+            </div>
+            <div class="tmonier-cp__body">
+                <div id="tmonier-cp-listbox" class="tmonier-cp__listbox" role="listbox" aria-labelledby="tmonier-cp-title" data-tmonier-cp-listbox></div>
+                <p class="tmonier-cp__message" data-tmonier-cp-message>{{ messages['empty'] }}</p>
+            </div>
+            <div class="tmonier-cp__footer" aria-hidden="true">
+                <span><kbd>↑</kbd><kbd>↓</kbd> {{ 'tmonier_command_palette.ui.hint_navigate'|trans }}</span>
+                <span><kbd>↵</kbd> {{ 'tmonier_command_palette.ui.hint_open'|trans }}</span>
+                <span><kbd data-tmonier-cp-modifier>Ctrl</kbd><kbd>↵</kbd> {{ 'tmonier_command_palette.ui.hint_new_tab'|trans }}</span>
+                <span><kbd>Esc</kbd> {{ 'tmonier_command_palette.ui.hint_close'|trans }}</span>
+            </div>
+            <div class="visually-hidden" role="status" aria-live="polite" data-tmonier-cp-status></div>
+        </div>
+        <div hidden data-tmonier-cp-icons>
+            {% for icon in tmonier_command_palette_icons() %}
+                <template data-icon="{{ icon }}">{{ ux_icon(icon, {'class': 'icon', 'aria-hidden': 'true'}) }}</template>
+            {% endfor %}
+        </div>
+    </div>
+    <script src="{{ asset('bundles/tmoniersyliuscommandpaletteplugin/command-palette.js') }}?v={{ constant('Tmonier\\SyliusCommandPalettePlugin\\TmonierSyliusCommandPalettePlugin::ASSETS_VERSION') }}" defer data-tmonier-command-palette-script></script>
+{% endif %}

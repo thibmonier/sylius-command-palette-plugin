@@ -1,0 +1,8 @@
+# Import this file from your application's config/routes:
+#
+# tmonier_sylius_command_palette:
+#     resource: "@TmonierSyliusCommandPalettePlugin/config/routes.yaml"
+
+tmonier_command_palette_admin:
+    resource: "@TmonierSyliusCommandPalettePlugin/config/routes/admin.yaml"
+    prefix: '/%sylius_admin.path_name%'

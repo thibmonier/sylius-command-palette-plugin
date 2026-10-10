@@ -1,0 +1,18 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.base#stylesheets':
+            tmonier_command_palette:
+                template: '@TmonierSyliusCommandPalettePlugin/admin/command_palette/stylesheets.html.twig'
+                priority: -100
+
+        # Dialog + script at the end of the body of every admin page (only for administrators).
+        'sylius_admin.base#javascripts':
+            tmonier_command_palette:
+                template: '@TmonierSyliusCommandPalettePlugin/admin/command_palette/dialog.html.twig'
+                priority: -100
+
+        # "Search… Ctrl K" button before the product search of the navbar.
+        'sylius_admin.common.component.navbar.menu':
+            tmonier_command_palette:
+                template: '@TmonierSyliusCommandPalettePlugin/admin/command_palette/trigger.html.twig'
+                priority: 100
