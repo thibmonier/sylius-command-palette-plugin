@@ -100,6 +100,8 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('tmonier_command_palette.search'),
             service('security.authorization_checker'),
+            service('security.helper'),
+            service('limiter.tmonier_command_palette_admin')->nullOnInvalid(),
         ])
         ->tag('controller.service_arguments')
         ->public()

@@ -7,9 +7,11 @@ namespace Tmonier\SyliusCommandPalettePlugin\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 
-final class TmonierSyliusCommandPaletteExtension extends Extension
+final class TmonierSyliusCommandPaletteExtension extends Extension implements PrependExtensionInterface
 {
     /** Configuration key => services of the built-in providers. */
     public const PROVIDER_SERVICES = [
@@ -19,9 +21,28 @@ final class TmonierSyliusCommandPaletteExtension extends Extension
         'promotions' => ['tmonier_command_palette.provider.promotions', 'tmonier_command_palette.provider.promotion_coupons'],
     ];
 
+    public function prepend(ContainerBuilder $container): void
+    {
+        /** @var array{rate_limit: array{enabled: bool, per_admin: int, interval: string, cache_pool: string}, limit_per_group: int, icons: list<string>, providers: array<string, bool>} $config */
+        $config = $this->processConfiguration(new Configuration(), $container->getExtensionConfig($this->getAlias()));
+
+        if ($config['rate_limit']['enabled'] && class_exists(RateLimiterFactory::class)) {
+            $container->prependExtensionConfig('framework', ['lock' => ['enabled' => true, 'resources' => ['default' => ['flock']]]]);
+            $container->prependExtensionConfig('framework', ['rate_limiter' => [
+                'tmonier_command_palette_admin' => [
+                    'policy' => 'sliding_window',
+                    'limit' => $config['rate_limit']['per_admin'],
+                    'interval' => $config['rate_limit']['interval'],
+                    'cache_pool' => $config['rate_limit']['cache_pool'],
+                    'lock_factory' => 'lock.factory',
+                ],
+            ]]);
+        }
+    }
+
     public function load(array $configs, ContainerBuilder $container): void
     {
-        /** @var array{limit_per_group: int, icons: list<string>, providers: array<string, bool>} $config */
+        /** @var array{rate_limit: array{enabled: bool, per_admin: int, interval: string, cache_pool: string}, limit_per_group: int, icons: list<string>, providers: array<string, bool>} $config */
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $container->setParameter('tmonier_command_palette.limit_per_group', $config['limit_per_group']);

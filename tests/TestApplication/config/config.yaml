@@ -1,6 +1,19 @@
 imports:
     - { resource: "@TmonierSyliusCommandPalettePlugin/config/config.yaml" }
 
+tmonier_sylius_command_palette:
+    rate_limit:
+        per_admin: 5
+        cache_pool: cache.tmonier_command_palette_limiter
+
+framework:
+    cache:
+        pools:
+            # Filesystem pool so that rate-limit state persists across sub-requests in the same test.
+            # Cleared in setUp() of every functional test that exercises rate limiting.
+            cache.tmonier_command_palette_limiter:
+                adapter: cache.adapter.filesystem
+
 twig:
     paths:
         '%kernel.project_dir%/../../../tests/TestApplication/templates': ~

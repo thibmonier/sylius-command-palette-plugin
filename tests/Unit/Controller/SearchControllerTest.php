@@ -6,6 +6,7 @@ namespace Tests\Tmonier\SyliusCommandPalettePlugin\Unit\Controller;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -75,9 +76,13 @@ final class SearchControllerTest extends TestCase
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker->method('isGranted')->with('ROLE_ADMINISTRATION_ACCESS')->willReturn($granted);
 
+        $security = $this->createMock(Security::class);
+        $security->method('getUser')->willReturn(null);
+
         return new SearchController(
             new CommandPaletteSearch(new SearchProviderRegistry([$provider]), new IdentityTranslator(), new NullLogger(), 5),
             $authorizationChecker,
+            $security,
         );
     }
 }

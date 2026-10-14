@@ -88,6 +88,28 @@ tmonier_sylius_command_palette:
         products: true      # products and variants
         promotions: true    # promotions and promotion coupons
         pages: true         # admin menu pages and "create" actions
+    rate_limit:
+        enabled: true       # set to false to disable (default: true, requires symfony/rate-limiter)
+        per_admin: 120      # max requests per admin user (or per IP) per interval
+        interval: '1 minute'
+        cache_pool: cache.rate_limiter   # any PSR-6 pool; use a filesystem pool in tests
+```
+
+### Rate limiting
+
+The search endpoint runs DQL queries on every keystroke. The built-in rate limiter
+(`symfony/rate-limiter` + `symfony/lock`) caps requests at **120 per minute per
+admin user** (keyed on the user identifier; falls back to the client IP when no
+user is found). Requests that exceed the limit receive a `429 Too Many Requests`
+JSON response (`{"error": "too_many_requests"}`) with a `Retry-After` header (seconds).
+
+The rate limiter is enabled by default and is automatically disabled if the
+`symfony/rate-limiter` package is not installed. To disable it explicitly:
+
+```yaml
+tmonier_sylius_command_palette:
+    rate_limit:
+        enabled: false
 ```
 
 ## Keyboard shortcuts
