@@ -23,8 +23,13 @@ final class TmonierSyliusCommandPaletteExtension extends Extension implements Pr
 
     public function prepend(ContainerBuilder $container): void
     {
-        /** @var array{rate_limit: array{enabled: bool, per_admin: int, interval: string, cache_pool: string}, limit_per_group: int, icons: list<string>, providers: array<string, bool>} $config */
-        $config = $this->processConfiguration(new Configuration(), $container->getExtensionConfig($this->getAlias()));
+        // Only the rate_limit node: the other values may still be unresolved env placeholders at
+        // this stage (e.g. a provider switched with '%env(bool:...)%'), which boolean nodes reject.
+        /** @var array{rate_limit: array{enabled: bool, per_admin: int, interval: string, cache_pool: string}} $config */
+        $config = $this->processConfiguration(new Configuration(), array_map(
+            static fn (array $config): array => array_intersect_key($config, ['rate_limit' => true]),
+            $container->getExtensionConfig($this->getAlias()),
+        ));
 
         if ($config['rate_limit']['enabled'] && class_exists(RateLimiterFactory::class)) {
             $container->prependExtensionConfig('framework', ['lock' => ['enabled' => true, 'resources' => ['default' => ['flock']]]]);
