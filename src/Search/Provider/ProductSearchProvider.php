@@ -17,20 +17,20 @@ use Tmonier\SyliusCommandPalettePlugin\Search\SearchResult;
  * Products whose name (in the administrator's locale) contains the query or whose code starts
  * with it, then variants whose code starts with the query. Two scalar queries at most.
  */
-final class ProductSearchProvider implements SearchProviderInterface
+final readonly class ProductSearchProvider implements SearchProviderInterface
 {
     /**
      * @param class-string $productClass
      * @param class-string $productVariantClass
      */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly TranslatorInterface $translator,
-        private readonly LocaleContextInterface $localeContext,
-        private readonly string $productClass,
-        private readonly string $productVariantClass,
-        private readonly string $defaultLocale,
+        private EntityManagerInterface $entityManager,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
+        private LocaleContextInterface $localeContext,
+        private string $productClass,
+        private string $productVariantClass,
+        private string $defaultLocale,
     ) {
     }
 

@@ -106,7 +106,7 @@ final class AdminPageCatalogTest extends TestCase
 
             public function has(string $name, array $options = []): bool
             {
-                return null !== $this->menu && 'sylius_admin.main' === $name;
+                return $this->menu instanceof \Knp\Menu\ItemInterface && 'sylius_admin.main' === $name;
             }
         };
     }

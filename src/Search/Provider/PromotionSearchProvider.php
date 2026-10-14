@@ -11,13 +11,13 @@ use Tmonier\SyliusCommandPalettePlugin\Search\SearchProviderInterface;
 use Tmonier\SyliusCommandPalettePlugin\Search\SearchResult;
 
 /** Cart promotions whose name contains the query or whose code starts with it. */
-final class PromotionSearchProvider implements SearchProviderInterface
+final readonly class PromotionSearchProvider implements SearchProviderInterface
 {
     /** @param class-string $promotionClass */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $promotionClass,
+        private EntityManagerInterface $entityManager,
+        private UrlGeneratorInterface $urlGenerator,
+        private string $promotionClass,
     ) {
     }
 

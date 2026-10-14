@@ -28,7 +28,7 @@ final class StubProvider implements SearchProviderInterface
     public function search(string $query, int $limit): array
     {
         $this->calls[] = [$query, $limit];
-        if (null !== $this->exception) {
+        if ($this->exception instanceof \Throwable) {
             throw $this->exception;
         }
 

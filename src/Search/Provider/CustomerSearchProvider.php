@@ -14,13 +14,13 @@ use Tmonier\SyliusCommandPalettePlugin\Search\SearchResult;
  * Customers whose e-mail, first name, last name or phone number starts with the query;
  * "John Do" also matches first name "John" + last name "Do…". One scalar query.
  */
-final class CustomerSearchProvider implements SearchProviderInterface
+final readonly class CustomerSearchProvider implements SearchProviderInterface
 {
     /** @param class-string $customerClass */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $customerClass,
+        private EntityManagerInterface $entityManager,
+        private UrlGeneratorInterface $urlGenerator,
+        private string $customerClass,
     ) {
     }
 

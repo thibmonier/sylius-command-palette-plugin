@@ -11,11 +11,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tmonier\SyliusCommandPalettePlugin\Search\CommandPaletteSearch;
 
 /** GET /admin/command-palette/search?q= */
-final class SearchController
+final readonly class SearchController
 {
     public function __construct(
-        private readonly CommandPaletteSearch $search,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private CommandPaletteSearch $search,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
