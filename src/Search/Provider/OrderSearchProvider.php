@@ -18,15 +18,15 @@ use Tmonier\SyliusCommandPalettePlugin\Search\SearchResult;
  * Placed orders (never carts): exact number first, then the latest orders of customers whose
  * e-mail or last name starts with the query. Two scalar queries at most.
  */
-final class OrderSearchProvider implements SearchProviderInterface
+final readonly class OrderSearchProvider implements SearchProviderInterface
 {
     /** @param class-string $orderClass */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly TranslatorInterface $translator,
-        private readonly MoneyFormatterInterface $moneyFormatter,
-        private readonly string $orderClass,
+        private EntityManagerInterface $entityManager,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
+        private MoneyFormatterInterface $moneyFormatter,
+        private string $orderClass,
     ) {
     }
 

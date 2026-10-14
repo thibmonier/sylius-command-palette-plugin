@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /** Runs the query through every provider and returns the non-empty groups. */
-final class CommandPaletteSearch
+final readonly class CommandPaletteSearch
 {
     public const MIN_LENGTH = 2;
 
@@ -16,10 +16,10 @@ final class CommandPaletteSearch
 
     /** @param positive-int $limitPerGroup */
     public function __construct(
-        private readonly SearchProviderRegistry $registry,
-        private readonly TranslatorInterface $translator,
-        private readonly LoggerInterface $logger,
-        private readonly int $limitPerGroup,
+        private SearchProviderRegistry $registry,
+        private TranslatorInterface $translator,
+        private LoggerInterface $logger,
+        private int $limitPerGroup,
     ) {
     }
 

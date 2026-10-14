@@ -11,13 +11,13 @@ use Tmonier\SyliusCommandPalettePlugin\Search\SearchProviderInterface;
 use Tmonier\SyliusCommandPalettePlugin\Search\SearchResult;
 
 /** Promotion coupons whose code starts with the query, linked to their promotion's coupons page. */
-final class PromotionCouponSearchProvider implements SearchProviderInterface
+final readonly class PromotionCouponSearchProvider implements SearchProviderInterface
 {
     /** @param class-string $promotionCouponClass */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $promotionCouponClass,
+        private EntityManagerInterface $entityManager,
+        private UrlGeneratorInterface $urlGenerator,
+        private string $promotionCouponClass,
     ) {
     }
 

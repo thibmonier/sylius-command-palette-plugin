@@ -44,7 +44,7 @@ final class CommandPaletteExtensionTest extends TestCase
 
         self::assertSame(
             ['tmonier_command_palette_data', 'tmonier_command_palette_icons'],
-            array_map(static fn ($function): string => $function->getName(), $functions),
+            array_map(static fn (\Twig\TwigFunction $function): string => $function->getName(), $functions),
         );
     }
 

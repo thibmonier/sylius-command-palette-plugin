@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tmonier\SyliusCommandPalettePlugin\Search;
 
 /** One line of the command palette. Every field is rendered as plain text. */
-final class SearchResult implements \JsonSerializable
+final readonly class SearchResult implements \JsonSerializable
 {
     public function __construct(
-        public readonly string $title,
-        public readonly ?string $subtitle,
-        public readonly string $url,
+        public string $title,
+        public ?string $subtitle,
+        public string $url,
         /** UX Icons name, e.g. "tabler:shopping-cart" */
-        public readonly ?string $icon = null,
-        public readonly ?string $badge = null,
+        public ?string $icon = null,
+        public ?string $badge = null,
     ) {
     }
 
