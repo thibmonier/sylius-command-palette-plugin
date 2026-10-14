@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Tmonier\SyliusCommandPalettePlugin\Functional;
 
+use Psr\Cache\CacheItemPoolInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Symfony\Bridge\Doctrine\DataCollector\DoctrineDataCollector;
@@ -17,6 +18,12 @@ final class AdminSearchEndpointTest extends WebTestCase
     protected function setUp(): void
     {
         $this->setUpClient();
+
+        // Clear any leftover rate-limiter state so the low per_admin limit in the test
+        // application config does not bleed across tests.
+        $pool = self::getContainer()->get('cache.tmonier_command_palette_limiter');
+        self::assertInstanceOf(CacheItemPoolInterface::class, $pool);
+        $pool->clear();
     }
 
     protected function tearDown(): void
