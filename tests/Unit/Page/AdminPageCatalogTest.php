@@ -43,6 +43,16 @@ final class AdminPageCatalogTest extends TestCase
         self::assertSame('tmonier_command_palette.action.new_customer', $actions[1]->title);
     }
 
+    public function testAnIconNameUxIconsWouldRejectIsLeftOut(): void
+    {
+        $menu = (new MenuFactory())->createItem('root');
+        $menu->addChild('buyers', ['uri' => '/admin/buyers/'])->setLabel('Buyers')->setLabelAttribute('icon', 'building');
+        $menu->addChild('logs', ['uri' => '/admin/logs/'])->setLabel('Logs')->setLabelAttribute('icon', 'tabler:list');
+        $catalog = new AdminPageCatalog($this->createMenuProvider($menu), $this->createUrlGenerator(), new Translator('en'));
+
+        self::assertSame([null, 'tabler:list'], array_map(static fn (SearchResult $page): ?string => $page->icon, $catalog->getPages()), 'An icon without its "prefix:" would break every admin page');
+    }
+
     public function testAMissingMenuGivesNoPages(): void
     {
         $catalog = new AdminPageCatalog($this->createMenuProvider(null), $this->createUrlGenerator(), new Translator('en'));

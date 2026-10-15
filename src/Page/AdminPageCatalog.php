@@ -17,6 +17,9 @@ use Tmonier\SyliusCommandPalettePlugin\Search\SearchResult;
  */
 final class AdminPageCatalog implements AdminPageCatalogInterface
 {
+    /** Icon name accepted by UX Icons: "prefix:name", lowercase letters, digits and dashes. */
+    private const ICON_NAME = '/^[a-z0-9]+(?:-[a-z0-9]+)*:[a-z0-9]+(?:-[a-z0-9]+)*$/';
+
     /** route => [translation key, icon] */
     public const DEFAULT_ACTIONS = [
         'sylius_admin_product_create_simple' => ['tmonier_command_palette.action.new_simple_product', 'tabler:cube'],
@@ -112,11 +115,15 @@ final class AdminPageCatalog implements AdminPageCatalogInterface
         );
     }
 
+    /**
+     * The icon of a menu item, only when UX Icons accepts its name ("prefix:name"): the palette renders
+     * every icon on every admin page, so one invalid name from a menu would break the whole admin.
+     */
     private function getIcon(ItemInterface $item): ?string
     {
         $icon = $item->getLabelAttribute('icon');
 
-        return is_string($icon) && '' !== $icon ? $icon : null;
+        return is_string($icon) && 1 === preg_match(self::ICON_NAME, $icon) ? $icon : null;
     }
 
     /** Relative URLs of this application only: external links (documentation, support) are skipped. */
