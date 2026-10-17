@@ -33,6 +33,10 @@ Spanish, Italian, Dutch and Polish, no build step and no JavaScript dependency.
 
 ![Command palette](docs/images/admin-command-palette.png)
 
+![Command palette (Cmd+K) searching "claire": her latest orders with status, then the customer](docs/images/admin-command-palette-search.jpg)
+
+*Command palette (Cmd+K) searching "claire": her latest orders with status, then the customer*
+
 ## Requirements
 
 | | Version |

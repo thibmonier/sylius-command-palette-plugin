@@ -37,6 +37,10 @@ aucune étape de build et aucune dépendance JavaScript.
 
 ![Palette de commandes](docs/images/admin-command-palette.png)
 
+![Palette de commandes (Cmd+K) pour « claire » : ses dernières commandes avec leur statut, puis le client](docs/images/admin-command-palette-search.jpg)
+
+*Palette de commandes (Cmd+K) pour « claire » : ses dernières commandes avec leur statut, puis le client*
+
 ## Prérequis
 
 | | Version |
