@@ -1,5 +1,7 @@
 # Sylius Command Palette Plugin
 
+> Français : [README.fr.md](README.fr.md) <!-- vitrine:lang -->
+
 [![Build](https://github.com/thibmonier/sylius-command-palette-plugin/actions/workflows/build.yaml/badge.svg)](https://github.com/thibmonier/sylius-command-palette-plugin/actions/workflows/build.yaml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -30,6 +32,10 @@ Spanish, Italian, Dutch and Polish, no build step and no JavaScript dependency.
 ## Screenshots
 
 ![Command palette](docs/images/admin-command-palette.png)
+
+![Command palette (Cmd+K) searching "claire": her latest orders with status, then the customer](docs/images/admin-command-palette-search.jpg)
+
+*Command palette (Cmd+K) searching "claire": her latest orders with status, then the customer*
 
 ## Requirements
 
@@ -282,6 +288,14 @@ vendor/bin/phpstan analyse
 vendor/bin/ecs check
 node --check Resources/public/command-palette.js
 ```
+
+<!-- vitrine:demo-b2b:start -->
+## B2B demo
+
+This plugin is used in the [Sylius B2B demo](https://github.com/thibmonier/sylius-b2b-demo): a Sylius 2.3 shop with fictitious sample data where the B2B plugins work together. The source code, setup and fixtures of the demo are in that repository.
+
+The demo is an example, not a production setup.
+<!-- vitrine:demo-b2b:end -->
 
 ## License
 
