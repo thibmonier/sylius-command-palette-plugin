@@ -47,7 +47,7 @@ aucune étape de build et aucune dépendance JavaScript.
 |---|---|
 | PHP | 8.2+ |
 | Sylius | 2.2, 2.3 |
-| Symfony | 6.4, 7.4, 8.0 |
+| Symfony | 7.4, 8.0 |
 
 ## Installation
 
