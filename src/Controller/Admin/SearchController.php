@@ -8,7 +8,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tmonier\SyliusCommandPalettePlugin\Search\CommandPaletteSearch;
@@ -20,7 +20,7 @@ final readonly class SearchController
         private CommandPaletteSearch $search,
         private AuthorizationCheckerInterface $authorizationChecker,
         private Security $security,
-        private ?RateLimiterFactory $rateLimiterFactory = null,
+        private ?RateLimiterFactoryInterface $rateLimiterFactory = null,
     ) {
     }
 
@@ -31,7 +31,7 @@ final readonly class SearchController
             throw new AccessDeniedException();
         }
 
-        if ($this->rateLimiterFactory instanceof RateLimiterFactory) {
+        if ($this->rateLimiterFactory instanceof RateLimiterFactoryInterface) {
             $key = $this->resolveRateLimitKey($request);
             $limit = $this->rateLimiterFactory->create($key)->consume();
 
